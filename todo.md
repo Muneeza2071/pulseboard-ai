@@ -10,4 +10,14 @@
 - [x] Validate desktop and Galaxy A21s responsive layouts with production build checks
 - [x] Hide the native horizontal KPI scrollbar while preserving touch swipe behavior on narrow screens
 - [x] Allow the local browser preview origin in Next.js development settings so dashboard interactions can hydrate during UI verification
-- [ ] Publish the approved frontend foundation to GitHub
+- [x] Publish the approved frontend foundation to GitHub
+- [x] Inspect available Supabase configuration and select a project-safe connection approach
+- [x] Implement PulseBoard exclusively through `pulseboard_*` tables and RLS policies inside the existing Supabase project without modifying DevDesk tables
+- [x] Add browser-safe Supabase client configuration and secure sign-up/sign-in/sign-out flows
+- [x] Create PostgreSQL workspace, membership, customer, deal, metric, activity, and audit schema with RLS policies
+- [x] Connect protected PulseBoard frontend states and validate disconnected auth UI, schema contract, TypeScript, and production build
+- [ ] Configure public Supabase environment variables in the PulseBoard deployment and perform a user-approved live authentication check
+- [ ] Publish the approved Supabase authentication and schema implementation to GitHub
+- [ ] Inspect Vercel access and create or connect a dedicated PulseBoard project
+- [ ] Deploy PulseBoard from its private GitHub repository with public Supabase environment values configured securely
+- [ ] Verify the live site and authenticated onboarding flow without creating misleading sample business data

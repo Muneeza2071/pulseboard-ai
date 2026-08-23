@@ -36,6 +36,7 @@ import {
   X,
 } from "lucide-react";
 import { useMemo, useState } from "react";
+import { AuthControls } from "../components/AuthControls";
 
 type ViewKey = "dashboard" | "customers" | "pipeline" | "metrics" | "analyst" | "reports" | "settings";
 
@@ -92,6 +93,7 @@ export default function Home() {
   const [insightAnswer, setInsightAnswer] = useState(
     "Revenue momentum is positive, but three accounts need attention because product usage and recent activity are lower than their usual baseline.",
   );
+  const [authenticatedName, setAuthenticatedName] = useState<string | null>(null);
   const ranges = ["Last 30 days", "This quarter", "Year to date"];
 
   const filteredCustomers = useMemo(
@@ -150,9 +152,9 @@ export default function Home() {
         </div>
         <div className="sidebar-bottom">
           <button className="help-row" onClick={() => showFoundationNotice("Help center will be connected in the product phase")}><Command size={16} /> Command menu <kbd>⌘ K</kbd></button>
-          <button className="profile-row" onClick={() => showFoundationNotice("Profile settings are part of the next backend phase")}>
-            <Avatar initials="AH" tone="violet" />
-            <span><b>Abbas Hussain</b><small>Workspace owner</small></span>
+          <button className="profile-row" onClick={() => showFoundationNotice(authenticatedName ? "Your authenticated PulseBoard profile is active" : "Sign in from the top bar to create your secure workspace")}>
+            <Avatar initials={authenticatedName ? authenticatedName.slice(0, 2).toUpperCase() : "AH"} tone="violet" />
+            <span><b>{authenticatedName ?? "Abbas Hussain"}</b><small>{authenticatedName ? "Authenticated member" : "Workspace owner"}</small></span>
             <MoreHorizontal size={17} />
           </button>
         </div>
@@ -165,6 +167,7 @@ export default function Home() {
           <div className="top-actions">
             <button className="icon-button search-button" aria-label="Search" onClick={() => showFoundationNotice("Global search is ready for Supabase data wiring")}><Search size={18} /><span>Search</span><kbd>⌘ K</kbd></button>
             <button className="icon-button" aria-label="Notifications" onClick={() => showFoundationNotice("Notifications will arrive after the realtime phase")}><Bell size={18} /><i /></button>
+            <AuthControls onUserChange={setAuthenticatedName} />
             <button className="mobile-menu-button" aria-label="Open navigation" onClick={() => setMobileMenuOpen(true)}><Menu size={21} /></button>
           </div>
         </header>
@@ -180,13 +183,13 @@ export default function Home() {
                 })}
                 <button className={`nav-item ${activeView === "settings" ? "active" : ""}`} onClick={() => navigate("settings")}><Settings2 size={18} /><span>Settings</span></button>
               </div>
-              <div className="profile-row mobile-profile"><Avatar initials="AH" tone="violet" /><span><b>Abbas Hussain</b><small>Workspace owner</small></span></div>
+              <div className="profile-row mobile-profile"><Avatar initials={authenticatedName ? authenticatedName.slice(0, 2).toUpperCase() : "AH"} tone="violet" /><span><b>{authenticatedName ?? "Abbas Hussain"}</b><small>{authenticatedName ? "Authenticated member" : "Workspace owner"}</small></span></div>
             </aside>
           </div>
         )}
 
         <div className="page-wrap">
-          <div className="foundation-banner"><Sparkles size={15} /> <span><b>Frontend preview</b> — all data is illustrative until Supabase is connected.</span><button onClick={() => showFoundationNotice("The full schema and RLS plan are already documented")}>View plan <ChevronRight size={14} /></button></div>
+          <div className="foundation-banner"><Sparkles size={15} /> <span><b>Secure data foundation</b> — authentication and workspace RLS are ready. Dashboard figures remain illustrative until you create and connect live workspace records.</span><button onClick={() => showFoundationNotice("The pulseboard_* schema is isolated from DevDesk and protected by workspace RLS")}>Security plan <ChevronRight size={14} /></button></div>
           {activeView === "dashboard" && <Dashboard range={ranges[rangeIndex]} onRangeChange={() => setRangeIndex((rangeIndex + 1) % ranges.length)} onNavigate={navigate} onInsight={askInsight} onNotice={showFoundationNotice} insightAnswer={insightAnswer} />}
           {activeView === "customers" && <CustomersView search={customerSearch} onSearch={setCustomerSearch} items={filteredCustomers} onNotice={showFoundationNotice} />}
           {activeView === "pipeline" && <PipelineView onNotice={showFoundationNotice} />}
