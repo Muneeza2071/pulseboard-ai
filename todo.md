@@ -33,6 +33,6 @@
 - [ ] Configure Vercel server-only Supabase, AI, GitHub OAuth, HubSpot OAuth, and token-encryption environment values
 - [x] Configure PulseBoard GitHub OAuth Client ID and Client Secret as sensitive Vercel environment variables
 - [ ] Run a real signed-in CRM CRUD, AI analysis, GitHub manual sync, and HubSpot manual sync validation with the user’s own accounts
-- [ ] Commit and push the validated CRM, AI Analyst, and manual integration milestone to AbbasFullstack/PulseBoard-AI
-- [ ] Sync the same validated milestone to the Vercel-connected Muneeza2071/pulseboard-ai repository
+- [x] Commit and push the validated CRM, AI Analyst, and manual integration milestone to AbbasFullstack/PulseBoard-AI
+- [x] Sync the same validated milestone to the Vercel-connected Muneeza2071/pulseboard-ai repository
 - [ ] Redeploy and verify the live CRM, AI Analyst, and manual integration workspace gates
