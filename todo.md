@@ -36,3 +36,4 @@
 - [x] Commit and push the validated CRM, AI Analyst, and manual integration milestone to AbbasFullstack/PulseBoard-AI
 - [x] Sync the same validated milestone to the Vercel-connected Muneeza2071/pulseboard-ai repository
 - [ ] Redeploy and verify the live CRM, AI Analyst, and manual integration workspace gates
+- [x] Change only the Vercel-connected Muneeza2071/pulseboard-ai clone to public to unblock Hobby-plan collaborator deployments
