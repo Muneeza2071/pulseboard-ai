@@ -16,8 +16,23 @@
 - [x] Add browser-safe Supabase client configuration and secure sign-up/sign-in/sign-out flows
 - [x] Create PostgreSQL workspace, membership, customer, deal, metric, activity, and audit schema with RLS policies
 - [x] Connect protected PulseBoard frontend states and validate disconnected auth UI, schema contract, TypeScript, and production build
-- [ ] Configure public Supabase environment variables in the PulseBoard deployment and perform a user-approved live authentication check
-- [ ] Publish the approved Supabase authentication and schema implementation to GitHub
-- [ ] Inspect Vercel access and create or connect a dedicated PulseBoard project
-- [ ] Deploy PulseBoard from its private GitHub repository with public Supabase environment values configured securely
-- [ ] Verify the live site and authenticated onboarding flow without creating misleading sample business data
+- [x] Configure public Supabase environment variables in the PulseBoard deployment and validate the live sign-in UI
+- [x] Publish the approved Supabase authentication and schema implementation to GitHub
+- [x] Inspect Vercel access and create or connect a dedicated PulseBoard project
+- [x] Deploy PulseBoard from the user-approved public GitHub import with public Supabase environment values configured securely
+- [x] Verify the live site and authentication modal without creating misleading sample business data
+- [x] Retry Vercel import only after the user has made the approved PulseBoard repository public; retain the no-secrets verification gate
+- [ ] Perform a real user sign-up/sign-in and first-workspace onboarding check with the user's own email address
+- [x] Implement real workspace-scoped companies, contacts, and deals CRUD with RLS-aware empty states
+- [x] Replace illustrative dashboard metrics with authenticated workspace aggregates while retaining explicit zero-data states
+- [x] Implement guarded AI Analyst requests over selected workspace CRM data with no provider key in the browser
+- [x] Add GitHub OAuth connection foundation with encrypted server-side token handling, repository selection, and user-triggered manual sync
+- [x] Add HubSpot OAuth connection foundation with encrypted server-side token handling, connection status, and user-triggered manual sync
+- [x] Add integration sync-run records, audit trails, failure states, and user-controlled disconnect actions without background automation
+- [x] Validate schema contract, CRM guest isolation, AI session guard, integration guest isolation, TypeScript, and production build
+- [ ] Configure Vercel server-only Supabase, AI, GitHub OAuth, HubSpot OAuth, and token-encryption environment values
+- [x] Configure PulseBoard GitHub OAuth Client ID and Client Secret as sensitive Vercel environment variables
+- [ ] Run a real signed-in CRM CRUD, AI analysis, GitHub manual sync, and HubSpot manual sync validation with the user’s own accounts
+- [ ] Commit and push the validated CRM, AI Analyst, and manual integration milestone to AbbasFullstack/PulseBoard-AI
+- [ ] Sync the same validated milestone to the Vercel-connected Muneeza2071/pulseboard-ai repository
+- [ ] Redeploy and verify the live CRM, AI Analyst, and manual integration workspace gates

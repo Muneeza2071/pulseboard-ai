@@ -6,7 +6,7 @@ import type { User } from "@supabase/supabase-js";
 import { getSupabaseBrowserClient } from "../lib/supabase-browser";
 
 type Mode = "sign-in" | "sign-up";
-type Workspace = { id: string; name: string };
+export type WorkspaceRef = { id: string; name: string };
 
 function displayName(user: User | null) {
   if (!user) return "";
@@ -19,11 +19,14 @@ function workspaceSlug(name: string) {
   return `${base}-${crypto.randomUUID().slice(0, 8)}`;
 }
 
-export function AuthControls({ onUserChange }: { onUserChange?: (name: string | null) => void }) {
+export function AuthControls({ onUserChange, onWorkspaceChange }: {
+  onUserChange?: (name: string | null) => void;
+  onWorkspaceChange?: (workspace: WorkspaceRef | null) => void;
+}) {
   const [open, setOpen] = useState(false);
   const [mode, setMode] = useState<Mode>("sign-in");
   const [user, setUser] = useState<User | null>(null);
-  const [workspace, setWorkspace] = useState<Workspace | null>(null);
+  const [workspace, setWorkspace] = useState<WorkspaceRef | null>(null);
   const [workspaceOpen, setWorkspaceOpen] = useState(false);
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
@@ -42,6 +45,7 @@ export function AuthControls({ onUserChange }: { onUserChange?: (name: string | 
       onUserChange?.(nextUser ? displayName(nextUser) : null);
       if (!nextUser) {
         setWorkspace(null);
+        onWorkspaceChange?.(null);
         setWorkspaceOpen(false);
         return;
       }
@@ -52,6 +56,7 @@ export function AuthControls({ onUserChange }: { onUserChange?: (name: string | 
         .limit(1)
         .maybeSingle();
       setWorkspace(data ?? null);
+      onWorkspaceChange?.(data ?? null);
       setWorkspaceOpen(!data);
     }
 
@@ -61,7 +66,7 @@ export function AuthControls({ onUserChange }: { onUserChange?: (name: string | 
     });
 
     return () => listener.subscription.unsubscribe();
-  }, [onUserChange, supabase]);
+  }, [onUserChange, onWorkspaceChange, supabase]);
 
   const resetFeedback = () => setNotice("");
 
@@ -134,6 +139,7 @@ export function AuthControls({ onUserChange }: { onUserChange?: (name: string | 
     }
 
     setWorkspace(data);
+    onWorkspaceChange?.(data);
     setWorkspaceOpen(false);
     setWorkspaceName("");
     setNotice("Workspace created. You are its owner and first member.");
