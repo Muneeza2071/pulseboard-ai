@@ -35,5 +35,12 @@
 - [ ] Run a real signed-in CRM CRUD, AI analysis, GitHub manual sync, and HubSpot manual sync validation with the user’s own accounts
 - [x] Commit and push the validated CRM, AI Analyst, and manual integration milestone to AbbasFullstack/PulseBoard-AI
 - [x] Sync the same validated milestone to the Vercel-connected Muneeza2071/pulseboard-ai repository
-- [ ] Redeploy and verify the live CRM, AI Analyst, and manual integration workspace gates
+- [x] Redeploy and verify the live CRM, AI Analyst, and manual integration workspace gates
 - [x] Change only the Vercel-connected Muneeza2071/pulseboard-ai clone to public to unblock Hobby-plan collaborator deployments
+- [x] Configure available server-only Vercel variables for Supabase admin access and OAuth-token encryption
+- [ ] Configure AI and HubSpot provider credentials when valid provider accounts or values are available
+- [ ] Redeploy and verify the configured server-only integration paths without exposing credentials
+- [x] Configure Groq AI Analyst server-only provider values in Vercel
+- [ ] Configure HubSpot Public App credentials after the user creates the HubSpot app
+- [x] Redeploy the server-only configuration and verify the live guest security gate
+- [x] Diagnose and fix the signed-in workspace creation failure without modifying DevDesk data or policies

@@ -14,6 +14,8 @@ const migrationFiles = [
   "202608230008_pulseboard_external_record_identity.sql",
   "202608230009_pulseboard_external_identity_upsert_indexes.sql",
   "202608230010_pulseboard_integration_secrets_deny_policy.sql",
+  "202608250011_pulseboard_workspace_rls_helper_permissions.sql",
+  "202608250012_pulseboard_private_rls_helpers.sql",
 ];
 const sql = migrationFiles.map((file) => readFileSync(join(migrationDir, file), "utf8")).join("\n");
 
@@ -46,7 +48,11 @@ assert.match(sql, /pulseboard_contacts_members_all[\s\S]*pulseboard_is_workspace
 assert.match(sql, /create trigger pulseboard_deals_customer_workspace_guard/i, "deals must validate customer workspace boundaries");
 assert.match(sql, /create trigger pulseboard_contacts_customer_workspace_guard/i, "contacts must validate customer workspace boundaries");
 assert.match(sql, /revoke execute on function public\.pulseboard_handle_new_auth_user\(\) from public, anon, authenticated/, "auth trigger helper must not be exposed as RPC");
-assert.match(sql, /revoke execute on function public\.pulseboard_is_workspace_member\(uuid\) from public, anon, authenticated/, "RLS helper must not be exposed as RPC");
+assert.match(sql, /revoke execute on function public\.pulseboard_is_workspace_member\(uuid\) from public, anon/, "RLS helper must remain unavailable to public and anon roles");
+assert.match(sql, /grant execute on function public\.pulseboard_is_workspace_member\(uuid\) to authenticated/, "workspace membership RLS helper must be executable for authenticated policy evaluation");
+assert.match(sql, /grant execute on function public\.pulseboard_can_manage_workspace\(uuid\) to authenticated/, "workspace manager RLS helper must be executable for authenticated policy evaluation");
+assert.match(sql, /alter function public\.pulseboard_is_workspace_member\(uuid\) set schema pulseboard_private/, "workspace membership RLS helper must move out of the browser-exposed schema");
+assert.match(sql, /grant execute on function pulseboard_private\.pulseboard_is_workspace_member\(uuid\) to authenticated/, "private workspace membership RLS helper must remain callable by authenticated policy evaluation");
 assert.match(sql, /revoke execute on function public\.pulseboard_validate_customer_workspace\(\) from public, anon, authenticated/, "customer workspace guard must not be exposed as RPC");
 assert.match(sql, /pulseboard_ai_insights_select_members[\s\S]*pulseboard_is_workspace_member\(workspace_id\)/, "AI insight history must be workspace RLS-scoped");
 assert.match(sql, /pulseboard_integrations_select_members[\s\S]*pulseboard_is_workspace_member\(workspace_id\)/, "integration status must be workspace RLS-scoped");
