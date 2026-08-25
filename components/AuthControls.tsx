@@ -127,9 +127,10 @@ export function AuthControls({ onUserChange, onWorkspaceChange }: {
     setBusy(true);
     setNotice("");
     const { data, error } = await supabase
-      .from("pulseboard_workspaces")
-      .insert({ name: cleanedName, slug: workspaceSlug(cleanedName), owner_id: user.id })
-      .select("id, name")
+      .rpc("pulseboard_create_workspace", {
+        p_name: cleanedName,
+        p_slug: workspaceSlug(cleanedName),
+      })
       .single();
     setBusy(false);
 
@@ -138,8 +139,14 @@ export function AuthControls({ onUserChange, onWorkspaceChange }: {
       return;
     }
 
-    setWorkspace(data);
-    onWorkspaceChange?.(data);
+    const createdWorkspace = data as WorkspaceRef | null;
+    if (!createdWorkspace) {
+      setNotice("Workspace could not be created. Please try again.");
+      return;
+    }
+
+    setWorkspace(createdWorkspace);
+    onWorkspaceChange?.(createdWorkspace);
     setWorkspaceOpen(false);
     setWorkspaceName("");
     setNotice("Workspace created. You are its owner and first member.");

@@ -16,6 +16,7 @@ const migrationFiles = [
   "202608230010_pulseboard_integration_secrets_deny_policy.sql",
   "202608250011_pulseboard_workspace_rls_helper_permissions.sql",
   "202608250012_pulseboard_private_rls_helpers.sql",
+  "202608250013_pulseboard_secure_workspace_creation_rpc.sql",
 ];
 const sql = migrationFiles.map((file) => readFileSync(join(migrationDir, file), "utf8")).join("\n");
 
@@ -44,6 +45,10 @@ for (const table of tables) {
 
 assert.match(sql, /pulseboard_workspaces_insert_owner[\s\S]*owner_id = \(select auth\.uid\(\)\)/, "workspace ownership must be bound to auth.uid()");
 assert.match(sql, /pulseboard_handle_workspace_created[\s\S]*pulseboard_workspace_members/, "workspace creation must add owner membership through trigger");
+assert.match(sql, /create or replace function public\.pulseboard_create_workspace[\s\S]*current_user_id uuid := auth\.uid\(\)/, "workspace RPC must bind creation to the authenticated caller");
+assert.match(sql, /insert into public\.pulseboard_workspaces \(name, slug, owner_id\)[\s\S]*current_user_id/, "workspace RPC must never accept a caller-supplied owner id");
+assert.match(sql, /revoke all on function public\.pulseboard_create_workspace\(text, text\) from public, anon/, "workspace RPC must not be exposed to public or anon roles");
+assert.match(sql, /grant execute on function public\.pulseboard_create_workspace\(text, text\) to authenticated/, "workspace RPC must only be executable by authenticated users");
 assert.match(sql, /pulseboard_contacts_members_all[\s\S]*pulseboard_is_workspace_member\(workspace_id\)/, "contacts must be workspace RLS-scoped");
 assert.match(sql, /create trigger pulseboard_deals_customer_workspace_guard/i, "deals must validate customer workspace boundaries");
 assert.match(sql, /create trigger pulseboard_contacts_customer_workspace_guard/i, "contacts must validate customer workspace boundaries");
