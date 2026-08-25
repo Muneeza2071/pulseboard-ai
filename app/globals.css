@@ -1,5 +1,6 @@
 @import "tailwindcss";
 @import "./crm.css";
+@import "./landing.css";
 
 :root {
   --canvas: #07111f;

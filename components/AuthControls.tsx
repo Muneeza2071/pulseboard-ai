@@ -19,9 +19,10 @@ function workspaceSlug(name: string) {
   return `${base}-${crypto.randomUUID().slice(0, 8)}`;
 }
 
-export function AuthControls({ onUserChange, onWorkspaceChange }: {
+export function AuthControls({ onUserChange, onWorkspaceChange, actionLabel = "Sign in" }: {
   onUserChange?: (name: string | null) => void;
   onWorkspaceChange?: (workspace: WorkspaceRef | null) => void;
+  actionLabel?: string;
 }) {
   const [open, setOpen] = useState(false);
   const [mode, setMode] = useState<Mode>("sign-in");
@@ -161,7 +162,7 @@ export function AuthControls({ onUserChange, onWorkspaceChange }: {
       </button>
     ) : (
       <button className="auth-button" onClick={() => { resetFeedback(); setOpen(true); }}>
-        <LogIn size={15} /> Sign in
+        <LogIn size={15} /> {actionLabel}
       </button>
     )}
 
